@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexneon — Ritual OS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #05060C; --text: #EAF0FF; --muted: #A8B2C8;
+      --violet: #7C3AED; --cyan: #22D3EE; --gold: #FCD34D;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.1); --accent: var(--violet);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 1.5s ease;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Custom Cursor with Halo */
+    #cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: #fff; border-radius: 50%;
+      pointer-events: none; z-index: 10000;
+      transition: transform 0.1s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    #cursor-halo {
+      position: fixed; width: 40px; height: 40px;
+      border: 1px solid var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transition: transform 0.15s ease, border-color 0.5s ease, width 0.3s, height 0.3s;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      opacity: 0.3;
+    }
+
+    .ambient-glow {
+      position: fixed; inset: 0; z-index: -1;
+      background: radial-gradient(circle at 50% var(--y, -20%), var(--accent), transparent 75%);
+      opacity: 0.25; transition: 1s ease;
+    }
+
+    nav {
+      position: fixed; width: 100%; padding: 25px 50px; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+    }
+
+    .logo { font-family: 'Cinzel'; font-weight: 900; font-size: 1.6rem; letter-spacing: 4px; color: #fff; }
+
+    .hero {
+      height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      padding: 0 20px;
+    }
+
+    h1 { font-family: 'Cinzel'; font-size: clamp(3rem, 10vw, 6rem); line-height: 0.9; }
+    .text-gradient { 
+      background: linear-gradient(135deg, #fff 30%, var(--accent)); 
+      -webkit-background-clip: text; color: transparent; 
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    .feature-row { 
+      display: flex; align-items: center; gap: 80px; padding: 120px 0; 
+    }
+    .feature-row:nth-child(even) { flex-direction: row-reverse; }
+
+    .feature-text { flex: 1; }
+    .feature-text h3 { font-family: 'Cinzel'; font-size: 2.8rem; margin-bottom: 20px; }
+    
+    .feature-visual { 
+      flex: 1.2; height: 450px; border-radius: 40px; 
+      border: 1px solid var(--border); background-size: cover; 
+      background-position: center; position: relative;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+      transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+
+    /* Scroll Reveal Animation Styles */
+    .reveal { 
+      opacity: 0; 
+      transform: translateY(40px); 
+      transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); 
+    }
+    .reveal.active { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+
+    .philosophy-section {
+      padding: 100px 0;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .philosophy-paragraph {
+      font-size: 1.2rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .btn-mag {
+      padding: 16px 36px; border-radius: 50px; border: 1px solid var(--accent);
+      background: rgba(255,255,255,0.02); color: #fff; font-family: 'Cinzel';
+      transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); display: inline-block; 
+      text-decoration: none; font-weight: 700; letter-spacing: 1px;
+    }
+
+    @media (max-width: 900px) {
+      .feature-row, .feature-row:nth-child(even) { flex-direction: column; text-align: center; gap: 40px; }
+      nav { padding: 20px; }
+    }
+  </style>
+</head>
+<body data-ritual="focus">
+
+  <div id="cursor"></div>
+  <div id="cursor-halo"></div>
+  <div class="ambient-glow"></div>
+
+  <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+  <nav>
+    <div class="logo">NEXNEON</div>
+    <a href="#waitlist" class="btn-mag">JOIN THE CIRCLE</a>
+  </nav>
+
+  <section class="hero">
+    <h1 class="reveal">Ritual OS<br><span class="text-gradient">Nexneon</span></h1>
+    <p class="reveal" style="color:var(--muted); margin-top:20px; font-size: 1.2rem;">Modern Sanctuary. Built in Jhapa.</p>
+  </section>
+
+  <section class="container" id="features">
+    <div class="philosophy-section reveal">
+        <p class="philosophy-paragraph">
+          Nexneon is envisioned as a Ritual OS — a mythic‑modern operating system that transforms technology into a sanctuary. Born in Jhapa, it carries the spirit of Nepali tradition while embracing global luxury design. Every interaction is crafted to feel intentional, from the ambient glow that shifts with your ritual mode to the magnetic buttons that respond like living symbols. Nexneon is not just software; it is a digital temple where focus, creativity, and clarity converge, guiding seekers into states of calm energy and purposeful flow.
+        </p>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <h3>Sacred Focus</h3>
+        <p style="font-size: 1.1rem; color: var(--muted);">A UI that breathes with your concentration. Our "Temple Halo" notification system minimizes noise, ensuring you only receive what is essential.</p>
+      </div>
+      <div class="feature-visual" style="background-image: url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000');"></div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <h3>Ritual Modes</h3>
+        <p style="font-size: 1.1rem; color: var(--muted);">Switch your digital environment instantly. Use <em>Calm Mode</em> for meditation, or <em>Festival Mode</em> to celebrate Nepali heritage with vibrant cultural integration.</p>
+      </div>
+      <div class="feature-visual" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000');"></div>
+    </div>
+
+    <div class="philosophy-section reveal">
+        <p class="philosophy-paragraph">
+          At its core, Nexneon is about community and transformation. It invites modern mystics, creators, and innovators to join a circle where tradition meets innovation. Ritual modes such as Focus, Calm, and Energy allow users to invoke environments that resonate with their intent, while the design language blends glassmorphism, sacred geometry, and immersive soundscapes. Nexneon is more than a tool — it is a movement, a cultural bridge, and a living brand that empowers people to seal their place in a circle of seekers who believe technology can be sacred.
+        </p>
+    </div>
+  </section>
+
+  <section id="waitlist" class="container">
+    <div class="waitlist-card reveal" style="text-align: center; margin-top: 50px;">
+      <h2 style="font-family:'Cinzel'; font-size: 3.5rem; margin-bottom: 20px;">Seal Your Place</h2>
+      <p style="color:var(--muted); margin-bottom: 40px;">The ritual begins soon. Join the prestige waitlist.</p>
+      <form id="wlForm" action="https://formspree.io/f/mgowvyzj" method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+        <input type="email" name="email" placeholder="your@email.com" style="background: #000; border: 1px solid var(--border); padding: 20px; border-radius: 15px; color: #fff; width: 100%; max-width: 400px; outline: none;" required>
+        <button type="submit" class="btn-mag" id="subBtn">NOTIFY ME</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const halo = document.getElementById('cursor-halo');
+    const clickSound = document.getElementById('clickSound');
+
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      cursor.style.left = x + 'px';
+      cursor.style.top = y + 'px';
+      setTimeout(() => {
+        halo.style.left = x + 'px';
+        halo.style.top = y + 'px';
+      }, 50);
+      document.querySelector('.ambient-glow').style.setProperty('--y', (y / window.innerHeight * 50) + '%');
+    });
+
+    // Reveal Logic (Controls the scroll animations)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            if(entry.target.innerText.includes("Sacred")) document.documentElement.style.setProperty('--accent', 'var(--gold)');
+            if(entry.target.innerText.includes("Modes")) document.documentElement.style.setProperty('--accent', 'var(--cyan)');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    document.addEventListener('click', () => {
+        clickSound.currentTime = 0;
+        clickSound.play();
+    });
+  </script>
+</body>
+</html>
